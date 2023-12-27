@@ -64,14 +64,15 @@ const updateTour = async (req, res) => {
 };
 
 //DELETE A TOUR
-const deleteTour = (req, res) => {
-  const id = req.params.id;
-  if (id > tours.length - 1) {
-    return res.status(404).json({
-      status: 'Failed',
-      message: 'Invalid ID',
-    });
+const deleteTour = async (req, res) => {
+  try {
+    const id = req.params.id; 
+    await Tour.findByIdAndDelete(id)
+    res.status(204)
+  } catch (error) {
+    res.status(400).send("Something wrong happened")
   }
+  
 };
 
 module.exports = { getAllTours, addATour, deleteTour, updateTour, getOneTour };
