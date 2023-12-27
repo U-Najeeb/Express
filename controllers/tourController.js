@@ -1,42 +1,69 @@
 const Tour = require('../models/toursModel');
+
+//GET ALL TOURS
 const getAllTours = async (req, res) => {
-  const tours = await Tour.find();
-  res.status(200).json({
-    status: 'sucesss',
-    results: Tour.length,
-    tours,
-  });
-};
-
-const getOneTour = (req, res) => {
-  const id = req.params.id;
-  const tour = tours.find((el) => el.id == id);
-  res.status(200).json({
-    status: 'success',
-    tour,
-  });
-};
-
-const addATour = async (req, res) => {
-  const tour = await Tour.create({
-    name: req.body.name,
-    rating: req.body.rating,
-    price: req.body.price,
-  });
-  res.status(200).json({
-    status: 'Success',
-    tour,
-  });
-};
-const updateTour = (req, res) => {
-  const id = req.params.id;
-  if (id > tours.length - 1) {
-    return res.status(404).json({
-      status: 'Failed',
-      message: 'Invalid ID',
+  try {
+    const tours = await Tour.find();
+    res.status(201).json({
+      message: 'Tours Found',
+      results: Tour.length,
+      tours,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Tours Not Found',
     });
   }
 };
+
+//GET ONE TOUR
+const getOneTour = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const tour = await Tour.findById({ _id: id });
+    res.status(200).json({
+      status: 'Tour Found',
+      tour,
+    });
+  } catch (error) {
+    res.status(404).send('Tour not found');
+  }
+};
+
+//ADD TOUR
+const addATour = async (req, res) => {
+  try {
+    const body = req.body;
+    const tour = await Tour.create(body);
+    res.status(200).json({
+      status: 'Tour Added',
+      tour,
+    });
+  } catch (error) {
+    res.status(400).send('Tour not created!');
+  }
+};
+
+// UPDATE A TOUR
+const updateTour = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const tour = await Tour.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
+      status: 'Tour Updated',
+      tour,
+    });
+  } catch (error) {
+    res.status(501).json({
+      status: 'Tour Not Updated'
+    });
+  }
+};
+
+//DELETE A TOUR
 const deleteTour = (req, res) => {
   const id = req.params.id;
   if (id > tours.length - 1) {
