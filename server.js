@@ -2,10 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config;
 const Tour = require("./models/toursModel");
-const {ApolloServer} = require("@apollo/server")
-const  { startStandaloneServer } = require('@apollo/server/standalone');
-const typeDefs = require("./schemas/typeDefs")
-const resolvers = require("./schemas/resolvers")
+// const {ApolloServer} = require("@apollo/server")
+// const  { startStandaloneServer } = require('@apollo/server/standalone');
+// const typeDefs = require("./schemas/typeDefs")
+// const resolvers = require("./schemas/resolvers")
 
 const app = express();
 dotenv({ path: `${__dirname}/config.env` });
