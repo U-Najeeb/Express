@@ -1,16 +1,12 @@
 const express = require('express');
-const fs = require('fs');
 const app = express();
-const tourRouter = require("./routes/tourRoutes")
+const tourRouter = require('./routes/tourRoutes');
+const userRouter = require('./routes/userRoutes');
 app.use(express.json());
 
-// const users = JSON.parse(
-//   fs.readFileSync(`${__dirname}/dev-data/data/users.json`)
-// );
-
 //ROUTES
-app.use("/api/v1/tours",tourRouter)
-
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {
