@@ -1,10 +1,11 @@
 const express = require('express');
-const Tour = require("./models/toursModel");
+const tourRouter = require("./routes/tourRoutes")
 const connectToMongoose = require('./config/connectToDb');
-
-const app = express();
-
 connectToMongoose()
+const app = express();
+app.use(express.json())
+app.use("/api/v1/tours", tourRouter)
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
