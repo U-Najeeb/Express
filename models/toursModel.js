@@ -16,7 +16,7 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'Tour must have a group size'],
     },
     difficulty: {
-      type: String,
+      type: String, 
       required: [true, 'Tour must have difficulty'],
     },
     ratingsAverage: { type: Number, default: 4.5 },
@@ -44,4 +44,5 @@ const tourSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+tourSchema.index({ name: 1, difficulty: 1 })
 module.exports = mongoose.model('Tour', tourSchema);

@@ -3,10 +3,29 @@ const Tour = require('../models/toursModel.js');
 //GET ALL TOURS
 const getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    let query = { ...req.query };
+    let excluded_fields = ['sort', 'page', 'limit', 'fields'];
+    excluded_fields.forEach((item) => delete query[item]);
+
+    //FOR FIELDS
+    let fieldsToSelect;
+    if (req.query.fields) {
+      fieldsToSelect = req.query.fields.split(',');
+    }
+
+    //FOR PAGINATION
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const tours = await Tour.find(query)
+      .sort(req.query.sort)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select(fieldsToSelect);
+
     res.status(201).json({
       message: 'Tours Found',
-      results: Tour.length,
+      results: tours.length,
       tours,
     });
   } catch (error) {
@@ -42,7 +61,7 @@ const addATour = async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
   }
-}; 
+};
 
 // UPDATE A TOUR
 const updateTour = async (req, res) => {
@@ -58,7 +77,7 @@ const updateTour = async (req, res) => {
     });
   } catch (error) {
     res.status(501).json({
-      status: 'Tour Not Updated'
+      status: 'Tour Not Updated',
     });
   }
 };
@@ -66,13 +85,13 @@ const updateTour = async (req, res) => {
 //DELETE A TOUR
 const deleteTour = async (req, res) => {
   try {
-    const id = req.params.id; 
-    await Tour.findByIdAndDelete(id)
-    res.status(204)
+    const id = req.params.id;
+    await Tour.findByIdAndDelete(id);
+    res.status(204);
   } catch (error) {
-    res.status(400).send("Something wrong happened")
+    res.status(400).send('Something wrong happened');
   }
-  
 };
 
-module.exports = { getAllTours, addATour, deleteTour, updateTour, getOneTour};
+const getStats = (req, res) => {};
+module.exports = { getAllTours, addATour, deleteTour, updateTour, getOneTour };
