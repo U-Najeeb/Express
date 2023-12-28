@@ -1,4 +1,4 @@
-const Tour = require('../models/toursModel');
+const Tour = require('../models/toursModel.js');
 
 //GET ALL TOURS
 const getAllTours = async (req, res) => {
@@ -40,9 +40,9 @@ const addATour = async (req, res) => {
       tour,
     });
   } catch (error) {
-    res.status(400).send('Tour not created!');
+    res.status(400).send(error);
   }
-};
+}; 
 
 // UPDATE A TOUR
 const updateTour = async (req, res) => {
@@ -75,4 +75,4 @@ const deleteTour = async (req, res) => {
   
 };
 
-module.exports = { getAllTours, addATour, deleteTour, updateTour, getOneTour };
+module.exports = { getAllTours, addATour, deleteTour, updateTour, getOneTour};
