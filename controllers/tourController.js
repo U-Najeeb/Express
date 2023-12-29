@@ -4,8 +4,8 @@ const Tour = require('../models/toursModel.js');
 const getAllTours = async (req, res) => {
   try {
     let query = { ...req.query };
-    let excluded_fields = ['sort', 'page', 'limit', 'fields'];
-    excluded_fields.forEach((item) => delete query[item]);
+    // let excluded_fields = ['sort', 'page', 'limit', 'fields'];
+    // excluded_fields.forEach((item) => delete query[item]);
 
     //FOR FIELDS
     let fieldsToSelect;
@@ -54,7 +54,7 @@ const addATour = async (req, res) => {
   try {
     const body = req.body;
     const tour = await Tour.create(body);
-    res.status(200).json({
+    res.status(201).json({
       status: 'Tour Added',
       tour,
     });
@@ -87,7 +87,7 @@ const deleteTour = async (req, res) => {
   try {
     const id = req.params.id;
     await Tour.findByIdAndDelete(id);
-    res.status(204);
+    res.status(204).json({});
   } catch (error) {
     res.status(400).send('Something wrong happened');
   }
