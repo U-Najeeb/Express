@@ -44,6 +44,7 @@ const getOneTour = catchAsync(async (req, res) => {
 const addATour = catchAsync(async (req, res, next) => {
   const body = req.body;
   const tour = await Tour.create(body);
+  
   res.status(201).json({
     status: 'Tour Added',
     tour,
